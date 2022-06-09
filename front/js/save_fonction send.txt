@@ -1,0 +1,30 @@
+// envoi requete vers le server
+ 
+  function Send(contact) {
+    const Panier_recap = JSON.parse(localStorage.getItem("Panier"))
+    let products=[];
+    for (i=0; i<Panier_recap.length;i++){ 
+      products[i]=Panier_recap[i]._id;
+      console.log("products",products[i]);
+    }
+  //contact=JSON.stringify(contact)
+  fetch("/http://localhost:3000/api/products/order", {
+   
+    method: "POST",
+     headers: { 
+      'Accept': 'application/json', 
+      'Content-Type': 'application/json' 
+     },
+	  body: JSON.stringify({contact,products}) 
+  
+  .then(function(response) {
+    if (response.ok) {
+      return response.json();
+    }
+    console.log("orderId",response); 
+  }) 
+  .then(function(value) {
+    alert("orderId",response);
+}) 
+  });
+}
