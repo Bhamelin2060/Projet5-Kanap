@@ -322,9 +322,14 @@ function funct_Validation_formulaire(Validation_Formulaire) {
     console.log('Etat du bouton:',Elt_Btncommand.desable)
     console.log("contact",contact);
   }
+
+  // Evenement du bouton validation panier
   Elt_Btncommand = document.getElementById("order");
-  Elt_Btncommand.addEventListener("click", (event) => {
-    console.log("contact",contact);
+  EltFormcommand=document.querySelector(".cart__order__form")
+  console.log(EltFormcommand);
+  EltFormcommand.addEventListener("submit", (event) => {
+  event.preventDefault();
+    
   
     if (Elt_Btncommand.disabled==false){
        
@@ -333,32 +338,14 @@ function funct_Validation_formulaire(Validation_Formulaire) {
     let products=[];
     for (i=0; i<Panier_recap.length;i++){ 
       products[i]=Panier_recap[i]._id;
-      console.log("products",products[i]);
+      
     }
-    console.log("products",products);
+    
      // contact=Client_Ref;
-      const orderId=send(contact,products);
-      //const orderId="12121df21d2f12df1"
-       
-       window.location.href = "http://127.0.0.1:5500/front/html/confirmation.html?orderId=" + orderId;
-       
-    }
-  }) 
-
-
-}
- 
-
-// envoi requete vers le server
-function send(contact,products) {
-  // Données à envoyer
-   
-  fetch("http://localhost:3000/api/products/order", {   //  fetch("http://localhost:3000/api/products/order";..
+      
+     fetch("http://localhost:3000/api/products/order", {   //  fetch("http://localhost:3000/api/products/order";..
     method: "POST",
-    headers: {
-      'Accept': 'application/json', 
-      'Content-Type': 'application/json'
-    },
+   
     
     body: JSON.stringify({contact,products})
   })
@@ -368,11 +355,27 @@ function send(contact,products) {
     }
   })
   .then(function(value) {
-      console.log("value.postData.text",value);
-      return(value);
+      console.log("Le numéro d'ID est",value);
+     // window.location.href = "http://127.0.0.1:5500/front/html/confirmation.html?orderId=" + orderId;
   });
+      
+       
+      
+       
+    }
+  }) 
 
-  }   
+
+}
+ 
+
+// envoi requete vers le server
+ 
+  // Données à envoyer
+   
+  
+
+     
     
   
  
