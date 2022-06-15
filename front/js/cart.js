@@ -1,5 +1,6 @@
 let Total_price = 0;
 let Total_Quantity = 0;
+//var orderID="";
 var Validation_Formulaire = {  // tableau deestiner à la validation du formulaire pour valider le bouton rcommander'
   val_first_name: false,
   val_lastName: false,
@@ -191,7 +192,7 @@ if (cart.length > 0) {
 let contact = {
   firstName: "",
   lastName: "",
-  adresse: "",
+  address: "",
   city: "",
   email: "",
 };
@@ -205,7 +206,7 @@ Elt_first_Name_Input.addEventListener("input", function (e) {
   if (/^[A-Z]{1}[a-z]{3,10}/.test(e.target.value)) {
     document.getElementById("firstNameErrorMsg").innerText = "conforme";
     contact.firstName = e.target.value;
-     this.firstName = Client_Ref.firstName;
+      
      
      console.log("contact",contact);
     Validation_Formulaire.val_first_name = true;
@@ -242,7 +243,7 @@ Elt_Adresse_input.addEventListener("input", function (e) {
   //if (/^[A-Z]{1}[a-z]{3,20}/.test(e.target.value)){
   if (/^[0-9]{1,4}\s[a-zA-Z\s]{1,24}\s/.test(e.target.value)) {
     document.getElementById("addressErrorMsg").innerText = "conforme";
-    contact.adresse = e.target.value;
+    contact.address = e.target.value;
     
     console.log("contact",contact);
     Validation_Formulaire.val_address = true;
@@ -335,8 +336,11 @@ function funct_Validation_formulaire(Validation_Formulaire) {
       console.log("products",products[i]);
     }
     console.log("products",products);
-     //contact=Client_Ref;
-      requetePost(contact,products);
+     // contact=Client_Ref;
+      const orderId=send(contact,products);
+      //const orderId="12121df21d2f12df1"
+       
+       window.location.href = "http://127.0.0.1:5500/front/html/confirmation.html?orderId=" + orderId;
        
     }
   }) 
@@ -346,23 +350,26 @@ function funct_Validation_formulaire(Validation_Formulaire) {
  
 
 // envoi requete vers le server
-function requetePost(contact,products) {
+function send(contact,products) {
   // Données à envoyer
-  fetch("http://localhost:3000/api/order/", {
+   
+  fetch("http://localhost:3000/api/products/order", {   //  fetch("http://localhost:3000/api/products/order";..
     method: "POST",
     headers: {
       'Accept': 'application/json', 
       'Content-Type': 'application/json'
     },
+    
     body: JSON.stringify({contact,products})
   })
-  .then(function(res) {
-    if (res.ok) {
-      return res.json();
+  .then(function(response) {
+    if (response.ok) {
+      return response.json();
     }
   })
   .then(function(value) {
-      console.log("value.postData.text",res);
+      console.log("value.postData.text",value);
+      return(value);
   });
 
   }   
